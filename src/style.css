@@ -1,1 +1,127 @@
+@import url("https://rsms.me/inter/inter.css");
 @import "tailwindcss";
+
+:root {
+  --radius: 0.625rem;
+
+  /* Background & Foreground */
+  --background: #ffffff;
+  --foreground: #000000;
+
+  /* Primary */
+  --primary: #007bff;
+  --primary-foreground: #ffffff;
+
+  /* Secondary */
+  --secondary: #f0f0f0;
+  --secondary-foreground: #000000;
+
+  /* Accent */
+  --accent: #f5f5f5;
+  --accent-foreground: #000000;
+
+  /* Destructive */
+  --destructive: #dc3545;
+  --destructive-foreground: #ffffff;
+
+  /* Muted */
+  --muted: #868c98;
+  --muted-foreground: #525866;
+
+  /* Info */
+  --info: #17a2b8;
+  --info-foreground: #ffffff;
+
+  /* Success */
+  --success: #28a745;
+  --success-foreground: #ffffff;
+
+  /* Warning */
+  --warning: #ffc107;
+  --warning-foreground: #ffffff;
+
+  /* Error */
+  --error: #dc3545;
+  --error-foreground: #ffffff;
+
+  /* Border & Input */
+  --border: #dee2e6;
+  --input: #f0f0f0;
+  --ring: #007bff;
+}
+
+@theme {
+  /* Font */
+  --font-sans: "InterVariable", sans-serif;
+  --font-sans--font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+
+  /* Border radius */
+  --radius: 0.625rem;
+
+  /* Background & Foreground */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  /* Primary */
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  /* Secondary */
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  /* Accent */
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  /* Destructive */
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  /* Muted */
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  /* Info */
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  /* Success */
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+
+  /* Warning */
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+
+  /* Error */
+  --color-error: var(--error);
+  --color-error-foreground: var(--error-foreground);
+
+  /* Border & Input */
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+    font-family: var(--font-sans);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+  }
+
+  input::placeholder {
+    color: var(--muted);
+  }
+}
+
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}

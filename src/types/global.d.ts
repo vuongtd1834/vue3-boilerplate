@@ -4,11 +4,7 @@ declare global {
   type ValueOf<T> = T[keyof T];
 
   interface Window {
-    showModalDialog?: (
-      url: string,
-      args?: unknown,
-      features?: string
-    ) => Promise<unknown>;
+    showModalDialog?: (url: string, args?: unknown, features?: string) => Promise<unknown>;
     closeModalDialog?: <T = unknown>(returnValue: T) => void;
     returnValue?: unknown;
     closeModernModal?: <T = unknown>(value: T) => void;

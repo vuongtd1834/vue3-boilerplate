@@ -28,12 +28,12 @@ const router = createRouter({
         {
           path: "",
           name: "home",
-          component: () => import("@/pages/Home/index.vue"),
+          component: () => import("@/views/Home/index.vue"),
         },
         {
-          path: "about",
-          name: "about",
-          component: () => import("@/pages/About/index.vue"),
+          path: "upload",
+          name: "upload",
+          component: () => import("@/views/Upload/index.vue"),
         },
       ],
     },

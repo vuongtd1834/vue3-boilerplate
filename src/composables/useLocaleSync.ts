@@ -14,11 +14,7 @@ export function useLocaleSync() {
   watch(
     () => route.params.lang,
     (lang) => {
-      if (
-        lang &&
-        typeof lang === "string" &&
-        supportedLocales.includes(lang as "en" | "ja")
-      ) {
+      if (lang && typeof lang === "string" && supportedLocales.includes(lang as "en" | "ja")) {
         changeLanguage(lang as "en" | "ja");
       }
     },

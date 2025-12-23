@@ -1,9 +1,4 @@
-import type {
-  AxiosError,
-  AxiosResponse,
-  CreateAxiosDefaults,
-  InternalAxiosRequestConfig,
-} from "axios";
+import type { AxiosError, AxiosResponse, CreateAxiosDefaults, InternalAxiosRequestConfig } from "axios";
 import axios from "axios";
 
 import { getAccessToken, getRefreshToken, useUserStore } from "@/stores/user";
@@ -48,15 +43,9 @@ instance.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    const originalRequest = error.config as
-      | CustomAxiosRequestConfig
-      | undefined;
+    const originalRequest = error.config as CustomAxiosRequestConfig | undefined;
 
-    if (
-      error.response?.status === 401 &&
-      originalRequest &&
-      !originalRequest._retry
-    ) {
+    if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
       originalRequest._retry = true;
 
       if (!refreshTokenPromise) {

@@ -88,7 +88,5 @@ export const isAdmin = (): boolean => {
   if (import.meta.env.MODE === "development") {
     return true;
   }
-  return !!useUserStore().credentials?.roles?.some(
-    (role) => role.name === "ADMIN"
-  );
+  return !!useUserStore().credentials?.roles?.some((role) => role.name === "ADMIN");
 };
