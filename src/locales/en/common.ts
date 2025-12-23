@@ -1,0 +1,6 @@
+export default {
+  welcome: "Welcome",
+  hello: "Hello",
+  home: "Home",
+  about: "About",
+};
