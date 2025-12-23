@@ -24,6 +24,10 @@ export default [
         window: "readonly",
         document: "readonly",
         console: "readonly",
+        URLSearchParams: "readonly",
+        // Global types from global.d.ts
+        ExtendedPromise: "readonly",
+        ValueOf: "readonly",
       },
     },
     plugins: {
@@ -33,8 +37,19 @@ export default [
     rules: {
       "@typescript-eslint/no-unused-vars": [
         "error",
-        { argsIgnorePattern: "^_" },
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          // Ignore parameters in type definitions (function types, interfaces, etc.)
+          caughtErrorsIgnorePattern: "^_",
+          // Don't check unused vars for type-only files
+          ignoreRestSiblings: true,
+        },
       ],
+      // Disable no-unused-vars for TypeScript (use @typescript-eslint version instead)
+      "no-unused-vars": "off",
+      // Disable no-undef for TypeScript files - TypeScript compiler handles this
+      "no-undef": "off",
       "vue/multi-word-component-names": "off",
       // Turn off vue/html-indent to let Prettier handle formatting
       "vue/html-indent": "off",
@@ -66,6 +81,6 @@ export default [
     },
   },
   {
-    ignores: ["dist", "node_modules", "*.config.js"],
+    ignores: ["dist", "node_modules", "*.config.js", "**/*.d.ts"],
   },
 ];
