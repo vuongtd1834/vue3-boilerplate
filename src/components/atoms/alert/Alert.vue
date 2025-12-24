@@ -1,19 +1,41 @@
 <script setup lang="ts">
+import { computed, h, type VNode } from "vue";
+
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from "@headlessui/vue";
-import { CircleAlert, CircleCheck, Info, TriangleAlert } from "lucide-vue-next";
+import { CircleAlert, CircleCheck, Info, TriangleAlert, X } from "lucide-vue-next";
 
 import Button from "@/components/atoms/button/Button.vue";
+import { cn } from "@/utils/helpers";
 
-type Props = {
+export type Props = {
   variant?: "error" | "warning" | "success" | "info" | "default";
-  description: string;
-  title: string;
-  className: string;
+  description?: string | VNode;
+  title: string | VNode;
+  className?: string;
   open?: boolean;
   onClose?: () => void;
   onOk?: () => void;
   onCancel?: () => void;
+  customFooter?: VNode;
+  width?: string;
 };
+
+const props = withDefaults(defineProps<Props>(), {
+  variant: "default",
+  open: false,
+  className: "",
+  description: undefined,
+  onClose: undefined,
+  onOk: undefined,
+  onCancel: undefined,
+  customFooter: undefined,
+  width: undefined,
+});
+
+const emit = defineEmits<{
+  "update:open": [value: boolean];
+  close: [];
+}>();
 
 const iconByVariant = {
   error: CircleAlert,
@@ -23,29 +45,8 @@ const iconByVariant = {
   default: TriangleAlert,
 };
 
-const props = withDefaults(defineProps<Props>(), {
-  variant: "default",
-});
-
 const Icon = computed(() => iconByVariant[props.variant]);
 
-const footer = computed(() => {
-  switch (props.variant) {
-    case "error":
-      return [h(Button, { variant: "error", size: "sm", onClick: () => (open = false) }, { default: () => "OK" })];
-    case "warning":
-      return [
-        h(Button, { variant: "warning", size: "sm", onClick: () => (open = false) }, { default: () => "Cancel" }),
-        h(Button, { variant: "default", size: "sm", onClick: () => (open = false) }, { default: () => "Ok" }),
-      ];
-    case "success":
-      return [h(Button, { variant: "success", size: "sm", onClick: () => (open = false) }, { default: () => "Close" })];
-    case "info":
-      return [h(Button, { variant: "info", size: "sm", onClick: () => (open = false) }, { default: () => "Close" })];
-    default:
-      return [h(Button, { variant: "default", size: "sm", onClick: () => (open = false) }, { default: () => "Close" })];
-  }
-});
 const iconColor = computed(() => {
   switch (props.variant) {
     case "error":
@@ -60,18 +61,72 @@ const iconColor = computed(() => {
       return ["text-foreground", "bg-foreground/10"];
   }
 });
+
+const handleClose = () => {
+  emit("update:open", false);
+  emit("close");
+  props.onClose?.();
+};
+
+const handleOk = () => {
+  props.onOk?.();
+  handleClose();
+};
+
+const handleCancel = () => {
+  props.onCancel?.();
+  handleClose();
+};
+
+const footer = computed(() => {
+  if (props.customFooter) {
+    return props.customFooter;
+  }
+
+  switch (props.variant) {
+    case "error":
+      return h(Button, { variant: "error", size: "sm", class: "w-30", onClick: handleOk }, { default: () => "OK" });
+    case "warning":
+      return h("div", { class: "flex gap-2" }, [
+        h(
+          Button,
+          { variant: "warning", size: "sm", class: "w-30", onClick: handleCancel },
+          { default: () => "Cancel" }
+        ),
+        h(Button, { variant: "default", size: "sm", class: "w-30", onClick: handleOk }, { default: () => "Ok" }),
+      ]);
+    case "success":
+      return h(
+        Button,
+        { variant: "success", size: "sm", class: "w-30", onClick: handleClose },
+        { default: () => "Close" }
+      );
+    case "info":
+      return h(
+        Button,
+        { variant: "info", size: "sm", class: "w-30", onClick: handleClose },
+        { default: () => "Close" }
+      );
+    default:
+      return h(
+        Button,
+        { variant: "default", size: "sm", class: "w-50", onClick: handleClose },
+        { default: () => "Close" }
+      );
+  }
+});
 </script>
 
 <template>
   <TransitionRoot as="template" :show="open">
-    <Dialog class="relative z-10" @close="open = false">
+    <Dialog class="relative z-10" @close="handleClose">
       <TransitionChild
         as="template"
         enter="ease-out duration-300"
         enter-from="opacity-0"
-        enter-to=""
+        enter-to="opacity-100"
         leave="ease-in duration-200"
-        leave-from=""
+        leave-from="opacity-100"
         leave-to="opacity-0"
       >
         <div class="fixed inset-0 bg-gray-500/75 transition-opacity"></div>
@@ -83,19 +138,24 @@ const iconColor = computed(() => {
             as="template"
             enter="ease-out duration-300"
             enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            enter-to=" translate-y-0 sm:scale-100"
+            enter-to="opacity-100 translate-y-0 sm:scale-100"
             leave="ease-in duration-200"
-            leave-from=" translate-y-0 sm:scale-100"
+            leave-from="opacity-100 translate-y-0 sm:scale-100"
             leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
             <DialogPanel
-              class="relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6"
+              :class="
+                cn(
+                  'relative transform overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6',
+                  className
+                )
+              "
             >
               <div class="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
                 <button
                   type="button"
-                  class="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-600"
-                  @click="open = false"
+                  class="rounded-md cursor-pointer bg-white text-muted hover:text-muted-foreground focus:outline-2 focus:outline-offset-2 focus:outline-primary"
+                  @click="handleClose"
                 >
                   <span class="sr-only">Close</span>
                   <X class="size-6" aria-hidden="true" />
@@ -106,19 +166,23 @@ const iconColor = computed(() => {
                   class="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full sm:mx-0 sm:size-10"
                   :class="iconColor[1]"
                 >
-                  <Icon class="size-6" :class="iconColor[0]" aria-hidden="true" />
+                  <component :is="Icon" class="size-6" :class="iconColor[0]" aria-hidden="true" />
                 </div>
                 <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                  <DialogTitle as="h3" class="text-base font-semibold">{{ title }}</DialogTitle>
-                  <div class="mt-2">
-                    <p class="text-sm text-foreground">
+                  <DialogTitle as="h3" class="text-base font-semibold">
+                    <template v-if="typeof title === 'string'">{{ title }}</template>
+                    <component :is="title" v-else />
+                  </DialogTitle>
+                  <div v-if="description" class="mt-2">
+                    <p v-if="typeof description === 'string'" class="text-sm text-foreground">
                       {{ description }}
                     </p>
+                    <component :is="description" v-else />
                   </div>
                 </div>
               </div>
               <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                {{ footer }}
+                <component :is="footer" />
               </div>
             </DialogPanel>
           </TransitionChild>

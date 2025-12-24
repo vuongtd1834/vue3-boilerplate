@@ -5,6 +5,9 @@ import { changeLanguage } from "@/locales";
 const supportedLocales = ["en", "ja"];
 const defaultLocale = "en";
 
+/**
+ * TODO: add a guard to check if the user is authenticated
+ */
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -34,6 +37,11 @@ const router = createRouter({
           path: "upload",
           name: "upload",
           component: () => import("@/views/Upload/index.vue"),
+        },
+        {
+          path: "login",
+          name: "login",
+          component: () => import("@/views/Login/index.vue"),
         },
       ],
     },

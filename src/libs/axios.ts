@@ -1,7 +1,7 @@
 import type { AxiosError, AxiosResponse, CreateAxiosDefaults, InternalAxiosRequestConfig } from "axios";
 import axios from "axios";
 
-import { getAccessToken, getRefreshToken, useUserStore } from "@/stores/user";
+import { getAccessToken, getRefreshToken, useUserStore } from "@/stores/user.store";
 import type { IAuthLoginResponse } from "@/types/auth";
 
 // Feature flags configuration

@@ -19,4 +19,9 @@ declare global {
   interface ExtendedPromise<T> extends Promise<T> {
     cancel?: () => void;
   }
+  type TBaseResponse<T> = {
+    data?: T;
+    code: string;
+    message: string;
+  };
 }
