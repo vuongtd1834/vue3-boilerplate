@@ -52,7 +52,7 @@ export const useUserStore = defineStore("user", {
  * use outside component
  * @returns {boolean}
  */
-export const isAuthenticated = () => {
+export const isAuthenticated = (): boolean => {
   return !!useUserStore().credentials?.token;
 };
 
@@ -60,24 +60,16 @@ export const isAuthenticated = () => {
  * use outside component
  * @returns {string}
  */
-export const getAccessToken = () => {
-  return useUserStore().credentials?.token?.value;
+export const getAccessToken = (): string => {
+  return useUserStore().credentials?.token?.value ?? "";
 };
 
 /**
  * use outside component
  * @returns {string}
  */
-export const getRefreshToken = () => {
-  return useUserStore().credentials?.refreshToken?.value;
-};
-
-/**
- * use outside component
- * @returns {string}
- */
-export const getTenantId = () => {
-  return useUserStore().credentials?.tenantCode;
+export const getRefreshToken = (): string => {
+  return useUserStore().credentials?.refreshToken?.value ?? "";
 };
 
 /**

@@ -83,6 +83,7 @@ const formatFileSize = (bytes: number): string => {
 
 <template>
   <div class="col-span-full flex flex-col gap-1">
+    <!-- TODO: Move dropzone to common component if needed -->
     <div
       class="mt-2 flex justify-center rounded-lg border-2 border-dashed px-6 py-2 transition-colors"
       :class="[isDragging ? 'border-primary bg-primary/10' : 'border-gray-300 hover:border-gray-400']"

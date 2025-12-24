@@ -9,7 +9,7 @@ import { queryClient } from "@/composables/useQueryClient";
 import { i18n } from "@/locales";
 import router from "@/router";
 
-import "@/style.css";
+import "@/styles/global.css";
 
 const pinia = createPinia();
 pinia.use(createPersistedState());

@@ -12,7 +12,6 @@ export interface IRole {
 export interface IAuthLoginResponse {
   token: IToken;
   refreshToken: IToken;
-  tenantCode?: string;
   roles?: IRole[];
   [key: string]: unknown;
 }
